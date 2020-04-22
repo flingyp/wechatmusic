@@ -11,16 +11,38 @@ const rp = require('request-promise')
 
 const URL = "http://musicapi.xiecheng.live/personalized"
 
+const MAX_LIMIT = 100
+
 // 云函数入口函数
 exports.main = async (event, context) => {
   // 读取 playlist 集合的数据
-  const list = await palylistCollection.get()
+  // const list = await palylistCollection.get()
+  const countResult = await palylistCollection.count()
+  const total = countResult.total
+  const batchTimes = Math.ceil(total / MAX_LIMIT)
+  const tasks = []
+  for(let i=0; i<batchTimes; i++) {
+    let promise = palylistCollection.skip(i * MAX_LIMIT).limit(MAX_LIMIT).get()
+    tasks.push(promise)
+  }
+  let list = {
+    data: []
+  }
+  if(tasks.length > 0) {
+    list = (await Promise.all(tasks)).reduce((acc, cur) => {
+      return {
+        data: acc.data.concat(cur.data)
+      }
+    })
+  }
+
 
   // 请求过来的 playlist 数据   
   const playlist = await rp(URL).then(res => {
     return JSON.parse(res).result
   })
 
+  // 数据去重处理
   const newData = []
   for(let i=0, len1 = playlist.length; i<len1; i++) {
     let flag = true

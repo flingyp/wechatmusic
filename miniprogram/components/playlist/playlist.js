@@ -30,6 +30,11 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    goToMusiclist() {
+      wx.navigateTo({
+        url: `../../pages/musiclist/musiclist?playlistId=${this.properties.playlist.id}`,
+      })
+    },
     _tranNumber(num, point) {
       // 把小数点后面的省去
       let numStr = num.toString().split('.')[0]
