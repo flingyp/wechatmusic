@@ -7,13 +7,19 @@
   <view class="player-disc {{isPlaying?'play': ''}}">
     <image class="player-img rotation {{isPlaying?'': 'rotation-paused'}}" src="{{picUrl}}"></image>
   </view>
-</view>
 
-<!-- 控制面板 -->
-<view class="control">
-    <text class="iconfont icon-shangyishoushangyige" bindtap="onPrev"></text>
-    <text class="iconfont {{isPlaying?'icon-zanting1': 'icon-bofang1'}}" bindtap="togglePlaying"></text>
-    <text class="iconfont icon-xiayigexiayishou" bindtap="onNext"></text>
+  <!-- 进度条 -->
+  <view class="progress-bar">
+    <x-progress-bar />
+  </view>
+
+  <!-- 控制面板 -->
+  <view class="control">
+      <text class="iconfont icon-shangyishoushangyige" bindtap="onPrev"></text>
+      <text class="iconfont {{isPlaying?'icon-zanting1': 'icon-bofang1'}}" bindtap="togglePlaying"></text>
+      <text class="iconfont icon-xiayigexiayishou" bindtap="onNext"></text>
+  </view>
+
 </view>
 
 
