@@ -7,12 +7,14 @@ const backgroundAudioManager = wx.getBackgroundAudioManager()
 // 当前的秒数
 let currentSec = -1
 let duration = 0 
+// 表示当前进度条是否在拖拽 解决：进度条拖动的时候 和 updatetime 事件冲突的问题
+let isMoving = false 
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
-
+    isSame: Boolean
   },
 
   /**
@@ -29,6 +31,9 @@ Component({
 
   lifetimes: {
     ready() {
+      if(this.properties.isSame && this.data.showTime.totalTime == '00:00') {
+        this._setTime()
+      }
       this._getMovableDis()
       this._bindBGMEvent()
     }
@@ -45,19 +50,21 @@ Component({
       if(event.detail.source == 'touch') {
         this.data.progress = event.detail.x / (movableAreaWidth - movableViewWidth) * 100
         this.data.movableDis = event.detail.x
+        isMoving = true
       }
     },
     // 放开移动园点时
     onTouchEnd() {
       // console.log(backgroundAudioManager.currentTime)
       // 这一步没必要
-      const currentTimeFmt = this._dateFormat(Math.floor(backgroundAudioManager.currentTime))
+      // const currentTimeFmt = this._dateFormat(Math.floor(backgroundAudioManager.currentTime))
       this.setData({
         progress: this.data.progress,
         movableDis: this.data.movableDis,
-        ['showTime.currentTime']: `${currentTimeFmt.min}:${currentTimeFmt.sec}`
+       // ['showTime.currentTime']: `${currentTimeFmt.min}:${currentTimeFmt.sec}`
       })
       backgroundAudioManager.seek(duration * this.data.progress / 100)
+      isMoving = false
     },
 
     _getMovableDis() {
@@ -74,7 +81,9 @@ Component({
 
     _bindBGMEvent() {
       backgroundAudioManager.onPlay(() => {
-        console.log('onPlay')
+        // console.log('onPlay')
+        isMoving = false
+        this.triggerEvent('musicPlay')
       })
 
       backgroundAudioManager.onStop(() => {
@@ -82,7 +91,8 @@ Component({
       })
 
       backgroundAudioManager.onPause(() => {
-        console.log('Pause')
+        // console.log('Pause')
+        this.triggerEvent('musicPause')
       })
 
       backgroundAudioManager.onWaiting(() => {
@@ -92,7 +102,7 @@ Component({
       backgroundAudioManager.onCanplay(() => {
         // console.log('onCanplay')
         // 获取 音乐的总时长
-        console.log(backgroundAudioManager.duration)
+        // console.log(backgroundAudioManager.duration)
         if(typeof backgroundAudioManager.duration != 'undefined') {
           this._setTime()
         } else {
@@ -104,25 +114,30 @@ Component({
       // 监听音频播放进度更新事件
       backgroundAudioManager.onTimeUpdate(() => {
         // console.log('onTimeUpdate')
-        // 获取当前播放时间
-        const currentTime = backgroundAudioManager.currentTime
-        // 获取当前音乐的总时间
-        const duration = backgroundAudioManager.duration
-        const sec = currentTime.toString().split('.')[0]
-        // 进行一次判断 减少在1s内 setData 的次数
-        if(sec != currentSec) {
-          const currentTimeFmt = this._dateFormat(currentTime)
-          this.setData({
-            movableDis:(movableAreaWidth - movableViewWidth) * currentTime / duration,
-            progress: currentTime / duration * 100,
-            ['showTime.currentTime']: `${currentTimeFmt.min}:${currentTimeFmt.sec}`
-          })
-          currentSec = sec
+        if(!isMoving) {
+          // 获取当前播放时间
+          const currentTime = backgroundAudioManager.currentTime
+          // 获取当前音乐的总时间
+          const duration = backgroundAudioManager.duration
+          const sec = currentTime.toString().split('.')[0]
+          // 进行一次判断 减少在1s内 setData 的次数
+          if(sec != currentSec) {
+            const currentTimeFmt = this._dateFormat(currentTime)
+            this.setData({
+              movableDis:(movableAreaWidth - movableViewWidth) * currentTime / duration,
+              progress: currentTime / duration * 100,
+              ['showTime.currentTime']: `${currentTimeFmt.min}:${currentTimeFmt.sec}`
+            })
+            currentSec = sec
+            // 歌词联动
+            this.triggerEvent('timeUpdate', {currentTime})
+          }
         }
       })
 
       backgroundAudioManager.onEnded(() => {
         console.log("onEnded")
+        this.triggerEvent('musicEnd')
       })
 
       backgroundAudioManager.onError((res) => {
@@ -138,7 +153,7 @@ Component({
       duration = backgroundAudioManager.duration
       // 对 duration 进行格式化
       const durationFmt = this._dateFormat(duration)
-      console.log(durationFmt)
+      // console.log(durationFmt)
       this.setData({
         ['showTime.totalTime']: `${durationFmt.min}:${durationFmt.sec}`
       })
