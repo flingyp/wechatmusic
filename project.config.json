@@ -49,6 +49,20 @@
 					"pathName": "pages/musiclist/musiclist",
 					"query": "playlistId=2168895862",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "blog",
+					"pathName": "pages/blog/blog",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "blog-edit",
+					"pathName": "pages/blog-edit/blog-edit",
+					"query": "nickName=\"幻听\"&avatarUrl=\"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLBxlibE…XWRJLlXgop63GCryHEL4CnxL8rQNd5zqiayLyHw4lPmhA/132\"}",
+					"scene": null
 				}
 			]
 		}

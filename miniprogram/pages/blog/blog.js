@@ -5,7 +5,43 @@ Page({
    * 页面的初始数据
    */
   data: {
+    // 控制底部弹出层是否显示
+    modalShow: false
+  },
+  // 发布功能
+  onPublish() {
+    // 判断用户是否授权
+    wx.getSetting({
+      success: (res) => {
+        if(res.authSetting['scope.userInfo']) {
+          // 表示授权过 直接获取用户信息
+          wx.getUserInfo({
+            success: (res) => {
+              this.onLoginSuccess({
+                detail: res.userInfo
+              })
+            },
+          })
+        } else {
+          // 表示没有授权过 弹出底部 login 授权组件
+          this.setData({
+            modalShow: true
+          })
+        }
+      },
+    })
+  },
 
+  onLoginSuccess(event) {
+    const detail = event.detail
+    wx.navigateTo({
+      url: `../blog-edit/blog-edit?nickName=${detail.nickName}&avatarUrl=${detail.avatarUrl}`,
+    })
+  },
+  onLoginFail() {
+    wx.showModal({
+      title: '授权后才能发布',
+    })
   },
 
   /**
