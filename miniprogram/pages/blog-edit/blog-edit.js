@@ -87,6 +87,7 @@ Page({
     if(content.trim() === '') {
       wx.showModal({
         title: '请输入内容',
+        mask: true
       })
       return
     }
@@ -136,6 +137,9 @@ Page({
         })
         // 返回blog页面 并且刷新
         wx.navigateBack() 
+        const pages = getCurrentPages()
+        const prevPage = pages[(pages.length) - 2]
+        prevPage.onPullDownRefresh()
       })
     }).catch(err => {
       wx.hideLoading()

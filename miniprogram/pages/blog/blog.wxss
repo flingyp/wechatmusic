@@ -1,4 +1,4 @@
-.header{
+.header {
   display: flex;
   align-items: center;
   padding: 0 20rpx;
@@ -16,14 +16,23 @@
   font-size: 48rpx;
 }
 
-.publish-container{
+.publish-container {
   width: 68rpx;
-  height: 68prx;
+  height: 68rpx;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.search-container{
+.search-container {
   flex: 1;
+}
+
+.blog-list {
+  margin-top: 120rpx;
+}
+
+.blog-panel {
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
 }
