@@ -1,4 +1,5 @@
 // pages/blog/blog.js
+let keyword = ''
 Page({
 
   /**
@@ -55,7 +56,8 @@ Page({
       data: {
         $url: 'list',
         start,
-        count: 10
+        count: 10,
+        keyword
       }
     }).then(res => {
       this.setData({
@@ -68,6 +70,14 @@ Page({
     wx.navigateTo({
       url: '../../pages/blog-comment/blog-comment?blogId=' + event.target.dataset.blogid,
     })
+  },
+
+  onSearch(event) {
+    this.setData({
+      blogList: []
+    })
+    keyword = event.detail.keyword
+    this._loadBlogList(0)
   },
 
   /**
@@ -119,7 +129,6 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log(this.data.blogList.length)
     this._loadBlogList(this.data.blogList.length)
   },
 
