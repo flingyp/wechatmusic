@@ -63,6 +63,12 @@
 					"pathName": "pages/blog-edit/blog-edit",
 					"query": "nickName=\"幻听\"&avatarUrl=\"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLBxlibE…XWRJLlXgop63GCryHEL4CnxL8rQNd5zqiayLyHw4lPmhA/132\"}",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的",
+					"pathName": "pages/profile/profile",
+					"scene": null
 				}
 			]
 		}

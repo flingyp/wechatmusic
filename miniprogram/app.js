@@ -14,16 +14,23 @@ App({
         traceUser: true,
       })
     }
+    
+
 
     this.globalData = {
-      playingMusicId: -1
+      playingMusicId: -1,
+      openid: -1
     }
   },
+
+
+
   setPlayMusicId(musicId) {
     this.globalData.playingMusicId = musicId
   },
 
   getPlayMusciId() {
     return this.globalData.playingMusicId
-  }
+  },
+
 })

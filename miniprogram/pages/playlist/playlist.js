@@ -27,6 +27,7 @@ Page({
    */
   onLoad: function (options) {
     this._getPlaylist()
+
   },
 
   /**
@@ -98,5 +99,5 @@ Page({
       wx.stopPullDownRefresh()
       wx.hideLoading()
     })
-  }
+  },
 })
