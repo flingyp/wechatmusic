@@ -6,6 +6,10 @@
 + 过程文档：https://github.com/flingyp/wechatmusic/wiki 
 + 这是自己在开发过程中一步一步记录的一些知识点，一切为了学习
 
+## WeChat-music后台管理系统项目
++ [wechat-music-web](https://github.com/flingyp/wechat-music-web)
++ [webchat-music-koa](https://github.com/flingyp/webchat-music-koa)
+
 ## 小程序效果
 
 [<img src="https://s1.ax1x.com/2020/05/04/YC4Wan.jpg" alt="YC4Wan.jpg" style="zoom: 25%;" />](https://imgchr.com/i/YC4Wan)
